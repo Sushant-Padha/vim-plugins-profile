@@ -229,7 +229,14 @@ class StartupAnalyzer(object):
         """
         Plot startup data.
         """
-        import pylab
+        # Pylab is a convenience module that imports both matplotlib and Numpy
+        # It is deprecated because of the namespace pollution it causes
+        # This script only utilizes matplotlib, only in this function
+        # So it is safe to replace
+        # `pylab` with `matplotlib.pyplot` in this function definition
+        
+        #import pylab
+        import matplotlib.pyplot as plt
 
         print("Plotting result...", end="")
         avg_data = self.average_data()
@@ -239,12 +246,12 @@ class StartupAnalyzer(object):
             sorted_err = [err[k] for k in list(zip(*avg_data))[0]]
         else:
             sorted_err = None
-        pylab.barh(range(len(avg_data)), list(zip(*avg_data))[1],
+        plt.barh(range(len(avg_data)), list(zip(*avg_data))[1],
                    xerr=sorted_err, align='center', alpha=0.4)
-        pylab.yticks(range(len(avg_data)), list(zip(*avg_data))[0])
-        pylab.xlabel("Average startup time (ms)")
-        pylab.ylabel("Plugins")
-        pylab.show()
+        plt.yticks(range(len(avg_data)), list(zip(*avg_data))[0])
+        plt.xlabel("Average startup time (ms)")
+        plt.ylabel("Plugins")
+        plt.show()
         print(" done.")
 
     def export(self, output_filename="result.csv"):
